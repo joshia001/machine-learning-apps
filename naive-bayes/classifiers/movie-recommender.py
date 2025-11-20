@@ -3,14 +3,16 @@ import pandas as pd
 from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import precision_score, recall_score, f1_score
+# from sklearn.metrics import confusion_matrix
+# from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.metrics import classification_report
+from sklearn.metrics import roc_auc_score
+import matplotlib.pyplot as plt
 
 #-----
 # Prepare data
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 data_path = ROOT / 'datasets'/ 'ml-1m' / 'ratings.dat'
 df = pd.read_csv(data_path, header=None, sep='::', engine='python')
@@ -82,22 +84,60 @@ print(f'The accuracy is: {accuracy*100:.1f}%')
 # Evaluate model
 
 # confusion matrix
-conf_mtx = confusion_matrix(Y_test, prediction, labels=[0,1])
+# conf_mtx = confusion_matrix(Y_test, prediction, labels=[0,1])
 
 # precision
 # precision = conf_mtx[1][1] / (conf_mtx[1][1]+conf_mtx[0][1])
-precision = precision_score(Y_test, prediction, pos_label=1)
+# precision = precision_score(Y_test, prediction, pos_label=1)
 # 0.90
 
 # recall
 # recall = conf_mtx[1][1] / (conf_mtx[1][1]+conf_mtx[1][0])
-recall = recall_score(Y_test, prediction, pos_label=1)
+# recall = recall_score(Y_test, prediction, pos_label=1)
 # 0.74
 
 # f1 score
-f1 = f1_score(Y_test, prediction, pos_label=1)
+# f1 = f1_score(Y_test, prediction, pos_label=1)
 # 0.82
 
 # classification report will compute all of the above evaluation metrics
 report = classification_report(Y_test, prediction)
 print(report)
+
+# area under curve (AUC) of receiver operating characteristic (ROC)
+pos_prob = prediction_prob[:, 1]
+thresholds = np.arange(0.0, 1.1, 0.05)
+true_pos, false_pos = [0]*len(thresholds), [0]*len(thresholds)
+for pred, y in zip(pos_prob, Y_test):
+    for i, threshold in enumerate(thresholds):
+        if pred >= threshold:
+            # if truth and prediction are both 1
+            if y == 1:
+                true_pos[i] += 1
+            # if truth is 0 while prediction is 1
+            else:
+                false_pos[i] += 1
+        else:
+            break
+
+n_pos_test = (Y_test == 1).sum()
+n_neg_test = (Y_test == 0).sum()
+true_pos_rate = [tp / n_pos_test for tp in true_pos]
+false_pos_rate = [fp / n_neg_test for fp in false_pos]
+# compute AUC of model
+roc_auc = roc_auc_score(Y_test, pos_prob)
+print('AUC = ', roc_auc)
+# plot ROC
+plt.figure()
+lw = 2
+plt.plot(false_pos_rate, true_pos_rate,
+         color='darkorange', lw=lw, label='model ROC')
+plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--',
+         label='random guessing')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic')
+plt.legend()
+plt.show()
