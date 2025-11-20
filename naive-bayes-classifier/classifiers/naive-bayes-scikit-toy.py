@@ -1,10 +1,12 @@
 from sklearn.naive_bayes import BernoulliNB
 import numpy as np
 
-# Scenario: Given we know if users like movies A, B or C, we want to predict if they will like movie D.
+# Scenario: Given we know if users like movies A, B or C, we want to predict 
+# if they will like movie D.
 # The training dataset is labelled (supervised learning).
 
-# Features matrix used as training set - in this case depicting whether a person liked movie A, B, C or not.
+# Features matrix used as training set - in this case depicting whether 
+# a person liked movie A, B, C or not.
 # E.g Person 0 didn't like movie A but liked movies B and C.  
 x_train = np.array([[0, 1, 1],
                    [0, 0, 1],

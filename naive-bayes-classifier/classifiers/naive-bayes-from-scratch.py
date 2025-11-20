@@ -3,12 +3,14 @@ import numpy as np
 # TOY SCENARIO - SUPERVISED LEARNING BY HAND 
 # KNOWLEDGE WILL FEED INTO A LARGER APPLICATION USING ACTUAL DATASETS
 #--------------------------------------------------------------------
-# Scenario: Given we know if users like movies A, B or C, we want to predict if they will like movie D.
+# Scenario: Given we know if users like movies A, B or C, we want to predict
+# if they will like movie D.
 # The training dataset is labelled (supervised learning).
 
-# Features matrix used as training set - in this case depicting whether a person liked movie A, B, C or not.
+# Features matrix used as training set - in this case depicting whether a 
+# person liked movie A, B, C or not.
 # E.g Person 0 didn't like movie A but liked movies B and C.  
-x_train = np.array([[0, 1, 1],
+x_train = np.array([[0, 1, 1], 
                    [0, 0, 1],
                    [0, 0, 0],
                    [1, 1, 0]])
@@ -51,8 +53,7 @@ prior = get_prior(label_indices)
 print('Prior:', prior)
 
 def get_likelihood(features, label_indices, smoothing=0):
-    """
-    Compute likelihood based on training samples
+    """    Compute likelihood based on training samples
     @param features: matrix of features
     @param label_indices: grouped sample indices by class
     @param smoothing: integer, additive smoothing parameter
@@ -66,6 +67,7 @@ def get_likelihood(features, label_indices, smoothing=0):
         total_count = len(indices)
         likelihood[label] = likelihood[label] / (total_count + 2 * smoothing)
     return likelihood
+
 
 smoothing = 1
 likelihood = get_likelihood(x_train, label_indices, smoothing)
