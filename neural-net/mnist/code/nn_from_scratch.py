@@ -216,7 +216,7 @@ def train(network: NeuralNetwork, X: FloatArray, y:IntArray,
         idx = np.random.permutation(N) # shuffle training data
         Xs, ys, yohs = X[idx], y[idx], y_oh[idx]
         
-        epoch_loss = 0.0
+        # epoch_loss = 0.0
         
         for start in range(0, N, batch_size):
             end = start + batch_size
