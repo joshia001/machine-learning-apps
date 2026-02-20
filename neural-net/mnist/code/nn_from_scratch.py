@@ -29,16 +29,16 @@ class NeuralNetwork:
         # np.random.seed(0) # for testing
         
         # input to hidden layers network
-        self.weights.append(0.01 * np.random.randn(input_size, hidden_layers[0]))
+        self.weights.append(np.random.normal(scale=(np.sqrt(2/input_size)), size=(input_size, hidden_layers[0])))
         self.biases.append(np.zeros((1, hidden_layers[0])))
         
         # hidden layer network
         for i in range(len(hidden_layers)-1):
-            self.weights.append(0.01 * np.random.randn(hidden_layers[i], hidden_layers[i+1]))
+            self.weights.append(np.random.normal(scale=(np.sqrt(2/hidden_layers[i])), size=(hidden_layers[i], hidden_layers[i+1])))
             self.biases.append(np.zeros((1, hidden_layers[i+1])))
         
         # hidden layer to output network
-        self.weights.append(0.01 * np.random.randn(hidden_layers[-1], output_size))
+        self.weights.append(np.random.normal(scale=(np.sqrt(2/hidden_layers[-1])), size=(hidden_layers[-1], output_size)))
         self.biases.append(np.zeros((1, output_size)))
         
     def relu(self, unscaled_vals: FloatArray) -> FloatArray:
