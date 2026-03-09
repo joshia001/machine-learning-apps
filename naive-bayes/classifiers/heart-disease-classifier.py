@@ -40,7 +40,7 @@ fit_prior_options = [True, False]
 auc_record = {}
 
 # calculate the average area under the roc auc curve for each smoothing factor and fit prior
-for train_indices, test_indices in k_fold.split(X_no_nan, y.values):
+for train_indices, test_indices in k_fold.split(X_no_nan, y.values.ravel()):
     X_train_k, X_test_k = X_no_nan[train_indices], X_no_nan[test_indices]
     Y_train_k, Y_test_k = y.values[train_indices], y.values[test_indices]
     for alpha in smoothing_factor_options:
@@ -61,7 +61,9 @@ for train_indices, test_indices in k_fold.split(X_no_nan, y.values):
 # -----
 # Train NB model
 
-X_train, X_test, y_train, y_test = train_test_split(X_no_nan, y.values, test_size=0.20)
+X_train, X_test, y_train, y_test = train_test_split(
+    X_no_nan, y.values, test_size=0.20, random_state=42, stratify=y.values
+)
 
 # use the best performing smoothing factor and fit prior option
 clf = MultinomialNB(alpha=1.0, fit_prior=True)
