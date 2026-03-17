@@ -2,47 +2,55 @@
 
 Hands-on machine learning projects built to develop practical, end-to-end understanding of core ML techniques.
 
-In this repository each project is implemented to understand both the *theory* and the *engineering* behind model training, evaluation, and real-world tradeoffs.
+In this repository each project is implemented to understand both the theory and the engineering behind model training, evaluation, and real-world tradeoffs.
 
-## Why This Repository Exists
+## Projects
 
-The goal is to build broad, practical mastery across machine learning domains by implementing models from:
-- first principles (to understand internals), and
-- production-grade libraries (to compare against standard tooling).
+### Naive Bayes
 
-## Current Work
-
-### 1) Naive Bayes Classifiers
 Location: `naive-bayes/classifiers/`
 
-Implemented classifiers include:
-- `naive-bayes-from-scratch.py`: Manual implementation of a Bernoulli-style Naive Bayes workflow (prior, likelihood, posterior) on a toy movie-preference problem.
-- `naive-bayes-scikit-toy.py`: Equivalent toy example using `scikit-learn`'s `BernoulliNB` for comparison.
-- `movie-recommender.py`: Multinomial Naive Bayes movie recommendation experiment using MovieLens ratings data, with ROC/AUC analysis and classification reporting.
-- `heart-disease-classifier.py`: Multinomial Naive Bayes applied to UCI Heart Disease data, including k-fold cross-validation for hyperparameter selection.
+- `naive-bayes-from-scratch.py`: Bernoulli-style Naive Bayes implemented manually on a small movie preference example.
+- `naive-bayes-scikit-toy.py`: The same toy classification problem solved with `scikit-learn`'s `BernoulliNB`.
+- `movie-recommender.py`: A MovieLens-based recommendation experiment using `MultinomialNB`, with accuracy, classification reporting, and ROC/AUC evaluation.
+- `heart-disease-classifier.py`: Binary heart disease classification using the UCI Heart Disease dataset, including stratified k-fold validation for parameter selection.
 
-Key skills demonstrated:
-- data preparation and feature shaping,
-- class thresholding and binary conversion,
-- model training/testing pipelines,
-- evaluation with precision/recall/F1, ROC, and AUC,
-- hyperparameter exploration via cross-validation.
+Topics covered:
+- prior, likelihood, and posterior calculation
+- feature preparation and label thresholding
+- train/test splitting
+- model evaluation with classification metrics and ROC/AUC
+- basic hyperparameter selection
 
-### 2) Neural Network From Scratch (MNIST)
-Location: `neural-net/mnist/`
+### Deep Learning
 
-Implemented components include:
-- `code/read_mnist.py`: Binary IDX file loader for raw MNIST images/labels.
-- `code/nn_from_scratch.py`: Fully connected neural network implementation in NumPy.
-- `code/show_mnist.py`: Dataset visualization and model experimentation script.
+Location: `deep-learning/`
 
-Neural network features:
-- configurable dense architecture (default: 784 -> 64 -> 64 -> 10),
-- ReLU hidden activations,
-- softmax output,
-- cross-entropy gradient with backpropagation,
-- mini-batch SGD training loop,
-- accuracy tracking during training/testing.
+#### MNIST From Scratch
+
+Location: `deep-learning/mnist-from-scratch/`
+
+- `code/read_mnist.py`: Reads MNIST IDX image and label files into NumPy arrays.
+- `code/nn_from_scratch.py`: NumPy implementation of a fully connected neural network with ReLU activations, softmax output, backpropagation, and mini-batch SGD.
+
+What it demonstrates:
+- manual weight and bias initialization
+- forward propagation through dense layers
+- softmax plus cross-entropy gradient flow
+- backpropagation and parameter updates
+- training and testing on MNIST digit data
+
+#### PyTorch Notebook
+
+Location: `deep-learning/pytorch/`
+
+- `hotel-cancellations.ipynb`: Notebook project for predicting hotel booking cancellations using neural networks for binary and multiclass classification with PyTorch.
+
+## Data
+
+- `datasets/ml-1m/`: MovieLens files used for the movie recommendation work.
+- `datasets/hotel_bookings.csv`: Hotel bookings dataset used by the PyTorch notebook.
+- `deep-learning/mnist-from-scratch/dataset/`: Local MNIST IDX files for the scratch neural network project.
 
 ## Tech Stack
 
@@ -51,39 +59,49 @@ Neural network features:
 - Pandas
 - scikit-learn
 - Matplotlib
-- UCI ML Repository API (`ucimlrepo`)
+- PyTorch
+- Jupyter Notebook
+- `ucimlrepo`
 
 ## Repository Structure
 
 ```text
 apps/
-├── naive-bayes/
-│   └── classifiers/
-│       ├── heart-disease-classifier.py
-│       ├── movie-recommender.py
-│       ├── naive-bayes-from-scratch.py
-│       └── naive-bayes-scikit-toy.py
-└── neural-net/
-    └── mnist/
-        ├── code/
-        │   ├── nn_from_scratch.py
-        │   ├── read_mnist.py
-        │   └── show_mnist.py
-        └── dataset/
+├── datasets/
+│   ├── hotel_bookings.csv
+│   └── ml-1m/
+├── deep-learning/
+│   ├── mnist-from-scratch/
+│   │   ├── code/
+│   │   └── dataset/
+│   └── pytorch/
+│       └── hotel-cancellations.ipynb
+└── naive-bayes/
+    └── classifiers/
+        ├── heart-disease-classifier.py
+        ├── movie-recommender.py
+        ├── naive-bayes-from-scratch.py
+        └── naive-bayes-scikit-toy.py
 ```
 
 ## Running Projects
 
-From the `apps` directory, run scripts directly:
+Run scripts from the `apps` directory:
 
 ```bash
+python naive-bayes/classifiers/naive-bayes-from-scratch.py
+python naive-bayes/classifiers/naive-bayes-scikit-toy.py
 python naive-bayes/classifiers/heart-disease-classifier.py
-python naive-bayes/classifiers/movie-recommender.py
-python neural-net/mnist/code/nn_from_scratch.py
+python deep-learning/mnist-from-scratch/code/nn_from_scratch.py
 ```
 
-Note:
-- Some scripts expect local datasets to already exist in the referenced paths.
-- The heart disease project fetches data through `ucimlrepo`.
+Open the notebook with Jupyter for the PyTorch project:
 
-More projects are currently underway.
+```bash
+jupyter notebook deep-learning/pytorch/hotel-cancellations.ipynb
+```
+
+## Notes
+
+- The heart disease classifier fetches data through `ucimlrepo`.
+- A few scripts use project-relative paths, so dataset locations may need to match the structure shown above.
